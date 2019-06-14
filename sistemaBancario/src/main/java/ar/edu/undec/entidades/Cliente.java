@@ -30,7 +30,7 @@ public class Cliente {
 			throw new ClienteIncompletoException();
 		
 		edad = Period.between(fechaDeNacimiento, LocalDate.now()).getYears();
-		
+
 		if(edad < 18)
 			throw new ClienteMenorEdadException();
 		
