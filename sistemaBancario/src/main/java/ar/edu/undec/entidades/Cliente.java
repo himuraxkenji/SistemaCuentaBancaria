@@ -6,6 +6,7 @@ import java.time.Period;
 import ar.edu.undec.excepciones.ClienteException;
 import ar.edu.undec.excepciones.ClienteIncompletoException;
 import ar.edu.undec.excepciones.ClienteMenorEdadException;
+import ar.edu.undec.interfaces.IDateTime;
 
 public class Cliente {
 	
@@ -14,8 +15,10 @@ public class Cliente {
 	private String domicilio;
 	private String telefono;
 	private LocalDate fechaDeNacimiento;
+	private final IDateTime fechaSistema;
 	
-	private Cliente(String nombreYApellido, String dni, String domicilio, String telefono,LocalDate fechaDeNacimiento) {
+	private Cliente(final IDateTime fechaSistema , String nombreYApellido, String dni, String domicilio, String telefono,LocalDate fechaDeNacimiento) {
+		this.fechaSistema = fechaSistema;
 		this.nombreYApellido = nombreYApellido;
 		this.dni = dni;
 		this.domicilio = domicilio;
@@ -23,18 +26,18 @@ public class Cliente {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 	
-	public static Cliente factoryCliente(String nombreYApellido, String dni,String domicilio, String telefono,LocalDate fechaDeNacimiento) throws ClienteException {
+	public static Cliente factoryCliente(final IDateTime fechaSistema, String nombreYApellido, String dni,String domicilio, String telefono,LocalDate fechaDeNacimiento) throws ClienteException {
 		int edad  = 0;
 		
 		if(nombreYApellido == null || dni == null || domicilio == null || telefono == null || fechaDeNacimiento == null)
 			throw new ClienteIncompletoException();
 		
-		edad = Period.between(fechaDeNacimiento, LocalDate.now()).getYears();
+		edad = Period.between(fechaDeNacimiento, fechaSistema.getDate()).getYears();
 
 		if(edad < 18)
 			throw new ClienteMenorEdadException();
 		
-		return  new Cliente(nombreYApellido, dni, domicilio, telefono, fechaDeNacimiento);
+		return  new Cliente(fechaSistema, nombreYApellido, dni, domicilio, telefono, fechaDeNacimiento);
 		
 	}
 
@@ -77,7 +80,6 @@ public class Cliente {
 	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
-	
 	
 	
 }
