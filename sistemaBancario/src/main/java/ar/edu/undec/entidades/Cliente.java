@@ -10,34 +10,34 @@ import ar.edu.undec.interfaces.IDateTime;
 
 public class Cliente {
 	
+	private static Integer id = 0 ;
 	private String nombreYApellido;
 	private String dni;
 	private String domicilio;
 	private String telefono;
 	private LocalDate fechaDeNacimiento;
-	private final IDateTime fechaSistema;
+	private IDateTime fechaSistema;
 	
-	private Cliente(final IDateTime fechaSistema , String nombreYApellido, String dni, String domicilio, String telefono,LocalDate fechaDeNacimiento) {
-		this.fechaSistema = fechaSistema;
+	private Cliente(String nombreYApellido, String dni, String domicilio, String telefono,LocalDate fechaDeNacimiento) {
 		this.nombreYApellido = nombreYApellido;
 		this.dni = dni;
 		this.domicilio = domicilio;
 		this.telefono = telefono;
 		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.id++;
 	}
 	
-	public static Cliente factoryCliente(final IDateTime fechaSistema, String nombreYApellido, String dni,String domicilio, String telefono,LocalDate fechaDeNacimiento) throws ClienteException {
+	public static Cliente factoryCliente( IDateTime fechaSistema, String nombreYApellido, String dni,String domicilio, String telefono,LocalDate fechaDeNacimiento) throws ClienteException {
 		int edad  = 0;
 		
 		if(nombreYApellido == null || dni == null || domicilio == null || telefono == null || fechaDeNacimiento == null)
-			throw new ClienteIncompletoException();
+			throw	 new ClienteIncompletoException();
 		
 		edad = Period.between(fechaDeNacimiento, fechaSistema.getDate()).getYears();
 
 		if(edad < 18)
 			throw new ClienteMenorEdadException();
-		
-		return  new Cliente(fechaSistema, nombreYApellido, dni, domicilio, telefono, fechaDeNacimiento);
+		return  new Cliente(nombreYApellido, dni, domicilio, telefono, fechaDeNacimiento);
 		
 	}
 
