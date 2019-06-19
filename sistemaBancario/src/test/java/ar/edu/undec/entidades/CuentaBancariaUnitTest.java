@@ -19,7 +19,7 @@ class CuentaBancariaUnitTest {
 	
 	@Mock
 	IDateTime fechaSistema;
-	IDateTime fechaCreacion;
+	IDateTime fechaCreacionCuenta;
 	
 	@Before
 	void inicial() throws ClienteException {
@@ -36,7 +36,7 @@ class CuentaBancariaUnitTest {
 		Mockito.when(fechaSistema.getDate()).thenReturn(LocalDate.of(2019, 06, 19));
 		
 		// Act 
-		CuentaBancaria unaCuenta = CuentaBancaria.factoryCuentaBancaria(unCliente, fechaCreacion);
+		CuentaBancaria unaCuenta = CuentaBancaria.factoryCuentaBancaria(unCliente, fechaCreacionCuenta);
 		
 		// Assert
 		
@@ -44,15 +44,5 @@ class CuentaBancariaUnitTest {
 		
 	}
 	
-	@Test
-	void crearCuentaBancaria_ClienteNulo_CrearClienteExceptionFechaNula() {
-		// Arrange 
-		Mockito.when(fechaSistema.getDate()).thenReturn(null);
-		
-		// Act y Assert
-		
-		assertThrows(CrearClienteException.class, () -> CuentaBancaria.factoryCuentaBancaria(unCliente, null));
-		
-	}
 
 }
